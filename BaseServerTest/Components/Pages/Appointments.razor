@@ -1,0 +1,36 @@
+﻿@page "/appointments"
+@rendermode InteractiveServer
+
+<h3>Zakazivanje usluga</h3>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Zakaži uslugu</h5>
+        <form>
+            <div class="mb-3">
+                <label for="serviceType" class="form-label">Tip usluge</label>
+                <select class="form-select" id="serviceType">
+                    <option>Šišanje</option>
+                    <option>Popravka</option>
+                    <option>Kućni poslovi</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="appointmentDate" class="form-label">Datum</label>
+                <input type="date" class="form-control" id="appointmentDate">
+            </div>
+            <div class="mb-3">
+                <label for="appointmentTime" class="form-label">Vreme</label>
+                <input type="time" class="form-control" id="appointmentTime">
+            </div>
+            <button type="submit" class="btn btn-primary">Zakaži!</button>
+        </form>
+    </div>
+</div>
+
+<DxScheduler DataStorage="@DataStorage" Height="600px">
+    <DxSchedulerTimelineView></DxSchedulerTimelineView>
+    <DxSchedulerDayView></DxSchedulerDayView>
+    <DxSchedulerWorkWeekView></DxSchedulerWorkWeekView>
+    <DxSchedulerMonthView></DxSchedulerMonthView>
+</DxScheduler>
+

@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject IFileVersionProvider FileVersionProvider
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="BaseServerTest.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-dark.bs5.min.css") rel="stylesheet" />
+    @DxResourceManager.RegisterScripts()
+    <link href=@AppendVersion("css/site.css") rel="stylesheet" />
+    <link href=@AppendVersion("DxBlazorApplication2.styles.css") rel="stylesheet" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes />
+    <script src="_framework/blazor.web.js"></script>
+    <script src="_content/DevExpress.Blazor/dx-blazor.js"></script>
+
+</body>
+
+</html>
+
+@code {
+    private string AppendVersion(string path) => FileVersionProvider.AddFileVersionToPath("/", path);
+}

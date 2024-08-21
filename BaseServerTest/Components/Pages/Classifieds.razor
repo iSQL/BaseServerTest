@@ -1,0 +1,30 @@
+﻿@page "/classifieds"
+
+<h3>Oglasi</h3>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Postavi oglas</h5>
+        <form>
+            <div class="mb-3">
+                <label for="classifiedTitle" class="form-label">Naslov</label>
+                <input type="text" class="form-control" id="classifiedTitle" placeholder="Unesi naslov">
+            </div>
+            <div class="mb-3">
+                <label for="classifiedDescription" class="form-label">Opis</label>
+                <textarea class="form-control" id="classifiedDescription" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Postavi</button>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Najsvežiji oglasi</h5>
+        <ul class="list-group">
+            <li class="list-group-item">Bicikl na prodaju - 100 dinara</li>
+            <li class="list-group-item">Soba za iznajmljivanje - 500 dinara dnevno</li>
+            <li class="list-group-item">Tražim dadilju - 065xxxxxxx</li>
+        </ul>
+    </div>
+</div>
