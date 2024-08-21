@@ -1,36 +1,25 @@
 ﻿@page "/chat"
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
-@rendermode InteractiveServer
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Group Chat</h5>
-                    <div class="form-group">
-                        <label>Group Name:</label>
-                        <input @bind="groupName" class="form-control" />
-                    </div>
-                    <button class="btn btn-primary" @onclick="JoinGroup">Join Group</button>
-                    <button class="btn btn-danger" @onclick="LeaveGroup">Leave Group</button>
-                    <hr />
-                    <div class="messages" style="height: 300px; overflow-y: scroll;">
-                        @foreach (var message in messages)
-                        {
-                            <div>@message</div>
-                        }
-                    </div>
-                    <div class="form-group">
-                        <label>Message:</label>
-                        <input @bind="messageInput" @bind:event="oninput" @onkeyup="HandleKeyPress" class="form-control" />
-                    </div>
-                    <button class="btn btn-primary" @onclick="SendMessage">Send</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<h3>Group Chat</h3>
+
+<div>
+    <input @bind="groupName" placeholder="Group Name" />
+    <button @onclick="JoinGroup">Join Group</button>
+    <button @onclick="LeaveGroup">Leave Group</button>
 </div>
 
+<div>
+    <input @bind="messageInput" placeholder="Type a message" @onkeyup="HandleKeyPress" />
+    <button @onclick="SendMessage">Send Message</button>
+</div>
+
+<ul style="height: 400px; overflow-y: auto;">
+    @foreach (var message in messages)
+    {
+        <li>[@message.Timestamp.ToString("g")] @message.UserName: @message.Content</li>
+    }
+</ul>

@@ -48,7 +48,6 @@ namespace BaseServerTest
             builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(
             builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
-
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
