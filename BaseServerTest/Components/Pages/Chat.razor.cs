@@ -1,5 +1,4 @@
 ﻿using BaseServerTest.Data;
-using BaseServerTest.Shared.Domain.Chat;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;

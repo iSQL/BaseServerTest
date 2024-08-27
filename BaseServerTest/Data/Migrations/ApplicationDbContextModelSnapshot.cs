@@ -90,6 +90,34 @@ namespace BaseServerTest.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("BaseServerTest.Data.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("BaseServerTest.Shared.Domain.Appointment", b =>
                 {
                     b.Property<int>("AppointmentId")
@@ -127,9 +155,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 1,
                             AllDay = false,
                             Caption = "Šišanje",
-                            EndDate = new DateTime(2024, 8, 27, 16, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 21, 16, 30, 0, 0, DateTimeKind.Local),
                             Label = 1,
-                            StartDate = new DateTime(2024, 8, 27, 14, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 21, 14, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -137,9 +165,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 2,
                             AllDay = false,
                             Caption = "Kod mehaničara",
-                            EndDate = new DateTime(2024, 8, 29, 13, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 23, 13, 30, 0, 0, DateTimeKind.Local),
                             Label = 6,
-                            StartDate = new DateTime(2024, 8, 29, 11, 30, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 23, 11, 30, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -147,9 +175,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 3,
                             AllDay = false,
                             Caption = "Šetnja sa patikama",
-                            EndDate = new DateTime(2024, 8, 28, 8, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 22, 8, 30, 0, 0, DateTimeKind.Local),
                             Label = 2,
-                            StartDate = new DateTime(2024, 8, 28, 8, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 22, 8, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -157,141 +185,11 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 4,
                             AllDay = false,
                             Caption = "Gledanje u Mesec",
-                            EndDate = new DateTime(2024, 8, 27, 1, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 21, 1, 30, 0, 0, DateTimeKind.Local),
                             Label = 3,
-                            StartDate = new DateTime(2024, 8, 27, 1, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 21, 1, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         });
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Chat.ChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChatMessages");
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedAd", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClassifiedAds");
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassifiedAdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateSent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassifiedAdId");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("ClassifiedMessages");
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateRegistered")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClassifiedUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -427,44 +325,6 @@ namespace BaseServerTest.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedAd", b =>
-                {
-                    b.HasOne("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", "User")
-                        .WithMany("ClassifiedAds")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedMessage", b =>
-                {
-                    b.HasOne("BaseServerTest.Shared.Domain.Classifieds.ClassifiedAd", "ClassifiedAd")
-                        .WithMany("Messages")
-                        .HasForeignKey("ClassifiedAdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", "Receiver")
-                        .WithMany("ReceivedMessages")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", "Sender")
-                        .WithMany("SentMessages")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ClassifiedAd");
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -514,20 +374,6 @@ namespace BaseServerTest.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedAd", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", b =>
-                {
-                    b.Navigation("ClassifiedAds");
-
-                    b.Navigation("ReceivedMessages");
-
-                    b.Navigation("SentMessages");
                 });
 #pragma warning restore 612, 618
         }

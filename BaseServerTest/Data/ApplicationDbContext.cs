@@ -1,11 +1,7 @@
 ﻿using BaseServerTest.Shared.Domain;
-using BaseServerTest.Shared.Domain.Chat;
-using BaseServerTest.Shared.Domain.Classifieds;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Reflection.Emit;
-using System.ServiceModel.Channels;
 
 namespace BaseServerTest.Data
 {
@@ -17,9 +13,6 @@ namespace BaseServerTest.Data
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
-        public DbSet<ClassifiedUser> ClassifiedUsers { get; set; }
-        public DbSet<ClassifiedAd> ClassifiedAds { get; set; }
-        public DbSet<ClassifiedMessage> ClassifiedMessages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -63,24 +56,15 @@ namespace BaseServerTest.Data
                 Label = 3,
                 Status = 1
             });
-
-            builder.Entity<ClassifiedMessage>()
-            .HasOne(m => m.Sender)
-            .WithMany(u => u.SentMessages)
-            .HasForeignKey(m => m.SenderId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<ClassifiedMessage>()
-                .HasOne(m => m.Receiver)
-                .WithMany(u => u.ReceivedMessages)
-                .HasForeignKey(m => m.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<ClassifiedMessage>()
-                .HasOne(m => m.ClassifiedAd)
-                .WithMany(c => c.Messages)
-                .HasForeignKey(m => m.ClassifiedAdId);
         }
 
+    }
+    public class ChatMessage
+    {
+        public int Id { get; set; }
+        public string GroupName { get; set; }
+        public string UserName { get; set; }
+        public string Content { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
