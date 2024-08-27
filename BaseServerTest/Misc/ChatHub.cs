@@ -1,4 +1,5 @@
 ﻿using BaseServerTest.Data;
+using BaseServerTest.Shared.Domain.Chat;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 namespace BaseServerTest.Misc;
