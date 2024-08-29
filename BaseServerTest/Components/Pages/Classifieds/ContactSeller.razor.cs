@@ -17,27 +17,33 @@ namespace BaseServerTest.Components.Pages.Classifieds
         UserManager<ApplicationUser> UserManager { get; set; }
         [Inject]
         AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Parameter] public string SellerId { get; set; }
-        [Parameter] public string AdId { get; set; }
-        public ClassifiedMessage Message = new ClassifiedMessage();
 
-        protected async override void OnInitialized()
+        [Parameter] 
+        public string SellerId { get; set; }
+        [Parameter] 
+        public string AdId { get; set; }
+        [SupplyParameterFromForm]
+        public ClassifiedMessage ClassifiedMessage {  get; set; }
+
+        protected override void OnInitialized()
         {
-            Message.Id = Guid.NewGuid().ToString();
-            Message.ReceiverId = SellerId;
-            Message.ClassifiedAdId = AdId;
-            Message.DateSent = DateTime.UtcNow;
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var currentUser = await UserManager.GetUserAsync(authState.User);
-            Message.SenderId = currentUser?.Id;
-
+            ClassifiedMessage ??= new();
             //ToDo: Add navigational items
             // Get sendId
         }
 
         private async Task SendMessage()
         {
-            await ClassifiedMessageService.SendMessageAsync(Message);
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var currentUser = await UserManager.GetUserAsync(authState.User);
+
+            ClassifiedMessage.Id = Guid.NewGuid().ToString();
+            ClassifiedMessage.ReceiverId = SellerId;
+            ClassifiedMessage.ClassifiedAdId = AdId;
+            ClassifiedMessage.DateSent = DateTime.UtcNow;
+            
+            ClassifiedMessage.SenderId = currentUser?.Id;
+            await ClassifiedMessageService.SendMessageAsync(ClassifiedMessage);
             // Navigate back to classifieds or to the conversation
         }
     }

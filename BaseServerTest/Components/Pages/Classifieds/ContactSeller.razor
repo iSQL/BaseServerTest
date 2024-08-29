@@ -1,14 +1,15 @@
 ﻿@page "/classifieds/contact/{SellerId}/{AdId}"
+@rendermode InteractiveServer
 
 <h3>Contact Seller</h3>
 
-<EditForm Model="Message" OnValidSubmit="SendMessage" FormName="SendMessageForm">
+<EditForm Model="ClassifiedMessage" OnValidSubmit="SendMessage" FormName="SendMessageForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div>
         <label>Message:</label>
-        <InputTextArea @bind-Value="Message.Content" />
+        <InputTextArea @bind-Value="ClassifiedMessage.Content" />
     </div>
 
     <button type="submit">Send Message</button>
