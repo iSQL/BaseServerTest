@@ -1,5 +1,7 @@
 ﻿using BaseServerTest.Data;
 using BaseServerTest.Shared.Domain.Chat;
+using BaseServerTest.State;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
@@ -9,14 +11,18 @@ namespace BaseServerTest.Components.Pages
 {
     public partial class Chat
     {
+        [Inject]
+        ApplicationState ApplicationState { get; set; }
         private HubConnection? hubConnection;
         private List<ChatMessage> messages = new List<ChatMessage>();
         private string? messageInput;
         private string? groupName;
-        private string userName = "User";
+        private string userName;
+        public string HeaderClass = "text-primary";
 
         protected override async Task OnInitializedAsync()
         {
+            userName = ApplicationState.CurrentUser.ToString();
             hubConnection = new HubConnectionBuilder()
                 .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
                 .Build();
@@ -29,12 +35,14 @@ namespace BaseServerTest.Components.Pages
                     Content = message,
                     Timestamp = DateTime.UtcNow
                 };
-                messages.Add(newMessage);
+                //messages.Add(newMessage);
+                messages.Insert(0, newMessage); // Add new message to top
                 InvokeAsync(StateHasChanged);
             });
 
             hubConnection.On<List<ChatMessage>>("ReceiveRecentMessages", (recentMessages) =>
             {
+                //recentMessages.Reverse();
                 messages.InsertRange(0, recentMessages);
                 InvokeAsync(StateHasChanged);
             });
@@ -45,17 +53,22 @@ namespace BaseServerTest.Components.Pages
 
         private async Task JoinGroup()
         {
+            HeaderClass = "text-success";
             if (hubConnection is not null && !string.IsNullOrEmpty(groupName))
             {
                 await hubConnection.SendAsync("JoinGroup", groupName);
+                await hubConnection.SendAsync("SendMessageToGroup", groupName, userName, "Ja dos'o");
                 messages.Clear(); // Clear existing messages when joining a new group
             }
         }
 
         private async Task LeaveGroup()
         {
+            HeaderClass = "text-primary";
             if (hubConnection is not null && !string.IsNullOrEmpty(groupName))
             {
+                await hubConnection.SendAsync("SendMessageToGroup", groupName, userName, "Odo' ja");
+                messageInput = string.Empty;
                 await hubConnection.SendAsync("LeaveGroup", groupName);
                 messages.Clear();
             }
@@ -66,6 +79,7 @@ namespace BaseServerTest.Components.Pages
             if (hubConnection is not null && !string.IsNullOrEmpty(messageInput) && !string.IsNullOrEmpty(groupName))
             {
                 await hubConnection.SendAsync("SendMessageToGroup", groupName, userName, messageInput);
+
                 messageInput = string.Empty;
             }
         }

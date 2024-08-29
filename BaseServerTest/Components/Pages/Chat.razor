@@ -4,17 +4,17 @@
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
-<h3>Group Chat</h3>
+<h3 class="@HeaderClass">Grupni chat</h3>
 
 <div>
-    <input @bind="groupName" placeholder="Group Name" />
-    <button @onclick="JoinGroup">Join Group</button>
-    <button @onclick="LeaveGroup">Leave Group</button>
+    <input class="form-control" @bind="groupName" placeholder="Ime grupe" />
+    <button class="btn btn-link" @onclick="JoinGroup">Udji u grupu</button>
+    <button class="btn btn-link" @onclick="LeaveGroup">Izadji iz grupe</button>
 </div>
 
 <div>
-    <input @bind="messageInput" placeholder="Type a message" @onkeyup="HandleKeyPress" />
-    <button @onclick="SendMessage">Send Message</button>
+    <input class="form-control" @bind="messageInput" placeholder="Unesi poruku" @onkeyup="HandleKeyPress" />
+    <button class="btn btn-light mt-3" @onclick="SendMessage">Posalji</button>
 </div>
 
 <ul style="height: 400px; overflow-y: auto;">

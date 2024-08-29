@@ -2,9 +2,11 @@
 using BaseServerTest.Data;
 using BaseServerTest.Services.Classifieds;
 using BaseServerTest.Shared.Domain.Classifieds;
+using BaseServerTest.State;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace BaseServerTest.Components.Pages.Classifieds
 {
@@ -12,6 +14,11 @@ namespace BaseServerTest.Components.Pages.Classifieds
     {
         [SupplyParameterFromForm]
         public ClassifiedAd Ad { get; set; }
+        [Parameter]
+        [SupplyParameterFromQuery]
+        public string? IsEditing { get; set; }
+        [Parameter]
+        public string? Id { get; set; }
 
         [Inject]
         public IClassifiedAdService ClassifiedAdService { get; set; }
@@ -19,21 +26,13 @@ namespace BaseServerTest.Components.Pages.Classifieds
         public IClassifiedUserService ClassifiedUserService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
-
         [Inject]
-        AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject]
-        UserManager<ApplicationUser> UserManager { get; set; }
-
-        ApplicationUser CurrentUser { get; set; }
+        ApplicationState ApplicationState { get; set; }
         ClassifiedUser ClassifiedUser { get; set; }
+        [Inject]
+        IHttpContextAccessor HttpContextAccessor { get; set; }
 
-
-        private bool IsInitialized = false; // Add this flag
-
-
-        public bool IsEditing;
-        public List<string> Categories = new List<string> { "Electronics", "Furniture", "Vehicles", "Services", "Other" };
+        public List<string> Categories = new List<string> { "KupoProdaja", "Usluge", "Ostalo" };
 
         //protected override async Task OnInitializedAsync()
         //{
@@ -57,20 +56,28 @@ namespace BaseServerTest.Components.Pages.Classifieds
         //ToDo: Check where to create classified user
         protected override async Task OnInitializedAsync()
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            CurrentUser = await UserManager.GetUserAsync(authState.User);
+            var CurrentUser = ApplicationState.CurrentUser;
             ClassifiedUser = await ClassifiedUserService.GetUserByIdAsync(CurrentUser?.Id);
-            if (CurrentUser != null && ClassifiedUser == null)
+            
+            if (IsEditing=="true" && HttpMethods.IsGet(HttpContextAccessor.HttpContext.Request.Method))
             {
-               await ClassifiedUserService.CreateUserAsync(new ClassifiedUser { UserName = CurrentUser.UserName, Id = CurrentUser.Id, Email = CurrentUser.Email, DateRegistered = DateTime.UtcNow }); 
-            }
-            else if (CurrentUser != null && ClassifiedUser != null)
-            {
-                // Classified user already exist
+                Ad = await ClassifiedAdService.GetAdByIdAsync(Id);
             }
             else
             {
-                // Handle the case where the user is not authenticated
+                if (CurrentUser != null && ClassifiedUser == null)
+                {
+                    //ToDo: add a prompt to ask user to create a classified user
+                    await ClassifiedUserService.CreateUserAsync(new ClassifiedUser { UserName = CurrentUser.UserName, Id = CurrentUser.Id, Email = CurrentUser.Email, DateRegistered = DateTime.UtcNow });
+                }
+                else if (CurrentUser != null && ClassifiedUser != null)
+                {
+                    // Classified user already exist
+                }
+                else
+                {
+                    // Handle the case where the user is not authenticated
+                }
             }
         }
 
@@ -81,15 +88,18 @@ namespace BaseServerTest.Components.Pages.Classifieds
 
         public async Task SaveAd()
         {
-            if (IsEditing)
+            if (IsEditing == "true")
             {
+                //To Do: Check if there is a better way to preserve Ad ID and user ID
+                Ad.Id = Id;
+                Ad.UserId = ApplicationState.CurrentUser.Id;
                 await ClassifiedAdService.UpdateAdAsync(Ad);
             }
             else
             {
                 Ad.Id = Guid.NewGuid().ToString();
                 Ad.DatePosted = DateTime.UtcNow;
-                Ad.UserId = CurrentUser.Id;
+                Ad.UserId = ApplicationState.CurrentUser.Id; //ToDo: check if transient can be used, singleton is shared across whole app
                 Ad.User = ClassifiedUser;
                 await ClassifiedAdService.CreateAdAsync(Ad);
             }

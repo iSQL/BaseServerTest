@@ -23,5 +23,9 @@ namespace BaseServerTest.Components.Pages.Classifieds
         {
             NavigationManager.NavigateTo($"/classifieds/contact/{Ad.UserId}/{AdId}");
         }
+        private void EditAd()
+        {
+            NavigationManager.NavigateTo($"/classifieds/post/{AdId}?IsEditing=true");
+        }
     }
 }

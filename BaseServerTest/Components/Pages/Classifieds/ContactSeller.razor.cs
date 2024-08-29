@@ -26,15 +26,15 @@ namespace BaseServerTest.Components.Pages.Classifieds
         [SupplyParameterFromForm]
         public ClassifiedMessage ClassifiedMessage {  get; set; }
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
             ClassifiedMessage ??= new();
-            //ToDo: Add navigational items
-            // Get sendId
         }
 
         private async Task SendMessage()
         {
+            //ToDo: Add navigational items
+            // Get senderId
             var currentUser = ApplicationState.CurrentUser;
 
             ClassifiedMessage.Id = Guid.NewGuid().ToString();

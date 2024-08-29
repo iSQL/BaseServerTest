@@ -5,9 +5,11 @@
 
 @if (Ad != null)
 {
-    <p>@Ad.Description</p>
-    <p>Price: @Ad.Price:C</p>
-    <button @onclick="ContactSeller">Contact Seller</button>
+    <p>UserID: @Ad.UserId</p>
+    <p>Opis: @Ad.Description</p>
+    <p>Price: @Ad.Price RSD</p>
+    <button @onclick="ContactSeller">Javi se prodavcu</button>
+    <button @onclick="EditAd">Izmeni</button> //ToDo: Only add owner should be able to edit the ad
 }
 else
 {

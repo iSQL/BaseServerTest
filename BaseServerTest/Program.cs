@@ -78,6 +78,8 @@ namespace BaseServerTest
             builder.Services.AddSingleton<ApplicationState>();
 
 
+            builder.Services.AddHttpContextAccessor();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

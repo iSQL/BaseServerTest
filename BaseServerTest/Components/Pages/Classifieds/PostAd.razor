@@ -1,23 +1,24 @@
 ﻿@page "/classifieds/post"
+@page "/classifieds/post/{Id}"
 
-<h3>@(IsEditing ? "Edit Ad" : "Post a New Ad")</h3>
+<h3>@(IsEditing=="true" ? "Izmeni oglas" : "Postavi novi oglas")</h3>
 
 <EditForm Model="Ad" OnValidSubmit="SaveAd" Enhance FormName="postAdForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div>
-        <label>Title:</label>
+        <label>Naslov:</label>
         <InputText @bind-Value="Ad.Title" />
     </div>
 
     <div>
-        <label>Description:</label>
+        <label>Opis:</label>
         <InputTextArea @bind-Value="Ad.Description" />
     </div>
 
     <div>
-        <label>Category:</label>
+        <label>Kategorija:</label>
         <InputSelect @bind-Value="Ad.Category">
             @foreach (var category in Categories)
             {
@@ -28,9 +29,9 @@
     </div>
 
     <div>
-        <label>Price:</label>
+        <label>Cena:</label>
         <InputNumber @bind-Value="Ad.Price" />
     </div>
 
-    <button type="submit">@(IsEditing ? "Save Changes" : "Post Ad")</button>
+    <button type="submit">@(IsEditing=="true" ? "Sačuvaj promene" : "Postavi oglas")</button>
 </EditForm>
