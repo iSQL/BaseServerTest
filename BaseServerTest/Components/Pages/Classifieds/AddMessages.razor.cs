@@ -16,6 +16,7 @@ namespace BaseServerTest.Components.Pages.Classifieds
         AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject]
         public IClassifiedMessageService ClassifiedMessageService { get; set; }
+
         public List<ClassifiedMessage> Messages;
 
         protected override async Task OnInitializedAsync()

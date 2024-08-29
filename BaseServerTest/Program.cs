@@ -17,6 +17,7 @@ using BaseServerTest.Contracts.Repositories.Classifieds;
 using BaseServerTest.Contracts.Services.Classifieds;
 using BaseServerTest.Repositories.Classifieds;
 using BaseServerTest.Services.Classifieds;
+using Microsoft.Extensions.DependencyInjection;
 namespace BaseServerTest
 {
     public class Program
@@ -74,7 +75,7 @@ namespace BaseServerTest
             builder.Services.AddScoped<IClassifiedUserService, ClassifiedUserService>();
             builder.Services.AddScoped<IClassifiedMessageService, ClassifiedMessageService>();
 
-            builder.Services.AddScoped<ApplicationState>();
+            builder.Services.AddSingleton<ApplicationState>();
 
 
             var app = builder.Build();
