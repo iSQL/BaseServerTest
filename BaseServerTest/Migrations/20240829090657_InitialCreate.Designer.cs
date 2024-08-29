@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseServerTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240827182603_CreateClassifiedEntities")]
-    partial class CreateClassifiedEntities
+    [Migration("20240829090657_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,9 +130,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 1,
                             AllDay = false,
                             Caption = "Šišanje",
-                            EndDate = new DateTime(2024, 8, 27, 16, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 29, 16, 30, 0, 0, DateTimeKind.Local),
                             Label = 1,
-                            StartDate = new DateTime(2024, 8, 27, 14, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 29, 14, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -140,9 +140,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 2,
                             AllDay = false,
                             Caption = "Kod mehaničara",
-                            EndDate = new DateTime(2024, 8, 29, 13, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 31, 13, 30, 0, 0, DateTimeKind.Local),
                             Label = 6,
-                            StartDate = new DateTime(2024, 8, 29, 11, 30, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 31, 11, 30, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -150,9 +150,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 3,
                             AllDay = false,
                             Caption = "Šetnja sa patikama",
-                            EndDate = new DateTime(2024, 8, 28, 8, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 30, 8, 30, 0, 0, DateTimeKind.Local),
                             Label = 2,
-                            StartDate = new DateTime(2024, 8, 28, 8, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 30, 8, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         },
                         new
@@ -160,9 +160,9 @@ namespace BaseServerTest.Migrations
                             AppointmentId = 4,
                             AllDay = false,
                             Caption = "Gledanje u Mesec",
-                            EndDate = new DateTime(2024, 8, 27, 1, 30, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 8, 29, 1, 30, 0, 0, DateTimeKind.Local),
                             Label = 3,
-                            StartDate = new DateTime(2024, 8, 27, 1, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 8, 29, 1, 0, 0, 0, DateTimeKind.Local),
                             Status = 1
                         });
                 });
@@ -197,11 +197,8 @@ namespace BaseServerTest.Migrations
 
             modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedAd", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -224,8 +221,9 @@ namespace BaseServerTest.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -236,14 +234,12 @@ namespace BaseServerTest.Migrations
 
             modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedMessage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassifiedAdId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClassifiedAdId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -252,11 +248,13 @@ namespace BaseServerTest.Migrations
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -271,20 +269,13 @@ namespace BaseServerTest.Migrations
 
             modelBuilder.Entity("BaseServerTest.Shared.Domain.Classifieds.ClassifiedUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateRegistered")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

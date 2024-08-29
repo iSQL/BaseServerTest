@@ -1,16 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace BaseServerTest.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateIdentitySchema : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Label = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    AllDay = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -30,6 +50,7 @@ namespace BaseServerTest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LuckyNumber = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,6 +69,36 @@ namespace BaseServerTest.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassifiedUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateRegistered = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassifiedUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +207,75 @@ namespace BaseServerTest.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ClassifiedAds",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassifiedAds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedAds_ClassifiedUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ClassifiedUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassifiedMessages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateSent = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClassifiedAdId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassifiedMessages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedMessages_ClassifiedAds_ClassifiedAdId",
+                        column: x => x.ClassifiedAdId,
+                        principalTable: "ClassifiedAds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedMessages_ClassifiedUsers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "ClassifiedUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedMessages_ClassifiedUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "ClassifiedUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "AppointmentId", "AllDay", "Caption", "EndDate", "Label", "StartDate", "Status" },
+                values: new object[,]
+                {
+                    { 1, false, "Šišanje", new DateTime(2024, 8, 29, 16, 30, 0, 0, DateTimeKind.Local), 1, new DateTime(2024, 8, 29, 14, 0, 0, 0, DateTimeKind.Local), 1 },
+                    { 2, false, "Kod mehaničara", new DateTime(2024, 8, 31, 13, 30, 0, 0, DateTimeKind.Local), 6, new DateTime(2024, 8, 31, 11, 30, 0, 0, DateTimeKind.Local), 1 },
+                    { 3, false, "Šetnja sa patikama", new DateTime(2024, 8, 30, 8, 30, 0, 0, DateTimeKind.Local), 2, new DateTime(2024, 8, 30, 8, 0, 0, 0, DateTimeKind.Local), 1 },
+                    { 4, false, "Gledanje u Mesec", new DateTime(2024, 8, 29, 1, 30, 0, 0, DateTimeKind.Local), 3, new DateTime(2024, 8, 29, 1, 0, 0, 0, DateTimeKind.Local), 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,11 +314,34 @@ namespace BaseServerTest.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassifiedAds_UserId",
+                table: "ClassifiedAds",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassifiedMessages_ClassifiedAdId",
+                table: "ClassifiedMessages",
+                column: "ClassifiedAdId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassifiedMessages_ReceiverId",
+                table: "ClassifiedMessages",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassifiedMessages_SenderId",
+                table: "ClassifiedMessages",
+                column: "SenderId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -215,10 +358,22 @@ namespace BaseServerTest.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChatMessages");
+
+            migrationBuilder.DropTable(
+                name: "ClassifiedMessages");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ClassifiedAds");
+
+            migrationBuilder.DropTable(
+                name: "ClassifiedUsers");
         }
     }
 }

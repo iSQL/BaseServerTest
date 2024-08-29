@@ -13,6 +13,10 @@ using BaseServerTest.Repositories;
 using BaseServerTest.State;
 using System;
 using BaseServerTest.Misc;
+using BaseServerTest.Contracts.Repositories.Classifieds;
+using BaseServerTest.Contracts.Services.Classifieds;
+using BaseServerTest.Repositories.Classifieds;
+using BaseServerTest.Services.Classifieds;
 namespace BaseServerTest
 {
     public class Program
@@ -59,6 +63,16 @@ namespace BaseServerTest
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
             builder.Services.AddScoped<IAppointmentDataService, AppointmentDataService>();
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+            // ClassifiedsRepository registrations
+            builder.Services.AddScoped<IClassifiedAdRepository, ClassifiedAdRepository>();
+            builder.Services.AddScoped<IClassifiedUserRepository, ClassifiedUserRepository>();
+            builder.Services.AddScoped<IClassifiedMessageRepository, ClassifiedMessageRepository>();
+
+            // Classifieds Service registrations
+            builder.Services.AddScoped<IClassifiedAdService, ClassifiedAdService>();
+            builder.Services.AddScoped<IClassifiedUserService, ClassifiedUserService>();
+            builder.Services.AddScoped<IClassifiedMessageService, ClassifiedMessageService>();
 
             builder.Services.AddScoped<ApplicationState>();
 

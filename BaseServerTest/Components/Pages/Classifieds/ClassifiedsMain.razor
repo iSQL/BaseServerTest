@@ -1,0 +1,36 @@
+﻿@page "/classifieds"
+
+<h3>Classifieds</h3>
+
+<div>
+    <input @bind="SearchTerm" placeholder="Search..." />
+    <button @onclick="SearchAds">Search</button>
+</div>
+
+<div>
+    <select @bind="SelectedCategory">
+        <option value="">All Categories</option>
+        @foreach (var category in Categories)
+        {
+            <option value="@category">@category</option>
+        }
+    </select>
+</div>
+
+<div>
+    @if (Ads != null)
+    {
+        <ul>
+            @foreach (var ad in Ads)
+            {
+                <li>
+                    <a href="@($"/classifieds/detail/{ad.Id}")">@ad.Title</a> - @ad.Price:C
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Loading ads...</p>
+    }
+</div>

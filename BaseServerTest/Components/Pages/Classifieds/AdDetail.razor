@@ -1,0 +1,15 @@
+﻿@page "/classifieds/detail/{AdId}"
+@rendermode InteractiveServer
+
+<h3>@Ad?.Title</h3>
+
+@if (Ad != null)
+{
+    <p>@Ad.Description</p>
+    <p>Price: @Ad.Price:C</p>
+    <button @onclick="ContactSeller">Contact Seller</button>
+}
+else
+{
+    <p>Loading ad details...</p>
+}
