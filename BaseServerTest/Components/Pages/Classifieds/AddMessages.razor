@@ -1,0 +1,17 @@
+﻿@page "/classifieds/messages"
+
+<h3>Messages</h3>
+
+@if (Messages != null)
+{
+    <ul>
+        @foreach (var message in Messages)
+        {
+            <li>@message.DateSent: @message.Content</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Loading messages...</p>
+}

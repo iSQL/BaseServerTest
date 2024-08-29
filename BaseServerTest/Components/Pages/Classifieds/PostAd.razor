@@ -1,0 +1,36 @@
+﻿@page "/classifieds/post"
+
+<h3>@(IsEditing ? "Edit Ad" : "Post a New Ad")</h3>
+
+<EditForm Model="Ad" OnValidSubmit="SaveAd" Enhance FormName="postAdForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Title:</label>
+        <InputText @bind-Value="Ad.Title" />
+    </div>
+
+    <div>
+        <label>Description:</label>
+        <InputTextArea @bind-Value="Ad.Description" />
+    </div>
+
+    <div>
+        <label>Category:</label>
+        <InputSelect @bind-Value="Ad.Category">
+            @foreach (var category in Categories)
+            {
+                <option value="@category">@category</option>
+            }
+        </InputSelect>        
+        <ValidationMessage For="@(() => Ad.Category)" />
+    </div>
+
+    <div>
+        <label>Price:</label>
+        <InputNumber @bind-Value="Ad.Price" />
+    </div>
+
+    <button type="submit">@(IsEditing ? "Save Changes" : "Post Ad")</button>
+</EditForm>

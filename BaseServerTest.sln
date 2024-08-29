@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseServerTest", "BaseServerTest\BaseServerTest.csproj", "{392E3F17-800B-4E3C-BBD1-E1CE6C7F295E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseServerTest.Shared", "BaseServerTest.Shared\BaseServerTest.Shared.csproj", "{B016785B-B08D-4F2C-8DA8-18411A26D30D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseServerTest.Shared", "BaseServerTest.Shared\BaseServerTest.Shared.csproj", "{B016785B-B08D-4F2C-8DA8-18411A26D30D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
